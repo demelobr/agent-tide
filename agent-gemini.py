@@ -20,10 +20,14 @@ tavily_tool = TavilySearchResults(max_results=5, tavily_api_key=TAVILY_API_KEY)
 tools = [tavily_tool]
 
 # Inicializando o Gemini
-llm = ChatGoogleGenerativeAI(model=GOOGLE_MODEL, google_api_key=GOOGLE_API_KEY, temperature=MODEL_TEMPERATURE)
+llm = ChatGoogleGenerativeAI(
+    model=GOOGLE_MODEL,
+    google_api_key=GOOGLE_API_KEY,
+    temperature=MODEL_TEMPERATURE
+)
 
 # System Prompt
-system_prompt = """Você será um agente da Defesa Civil e será responsável por responder perguntas sobre a tábua de maré,
+template = """Você será um agente da Defesa Civil e será responsável por responder perguntas sobre a tábua de maré,
 baseado na cidade e data fornecida pelo usuário.
 
 Você tem acesso às seguintes ferramentas:
@@ -46,7 +50,7 @@ Begin!
 Question: {input}
 Thought:{agent_scratchpad}"""
 
-prompt = PromptTemplate.from_template(system_prompt)
+prompt = PromptTemplate.from_template(template)
 
 # Criando o agente ReAct
 agent = create_react_agent(llm, tools, prompt)
