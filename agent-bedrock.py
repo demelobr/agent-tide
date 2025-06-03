@@ -6,13 +6,16 @@ from langchain_core.prompts import PromptTemplate
 from langchain_community.tools.tavily_search import TavilySearchResults
 
 
-# Carregando as chaves de api: Gemini e Tavily.
+# Carregando as chaves de api: Bedrock e Tavily.
 load_dotenv()
 
 TAVILY_API_KEY = os.getenv("TAVILY_API_KEY")
 AWS_MODEL = os.getenv("AWS_MODEL")
+AWS_INFERENCE_PROFILE_ID = os.getenv("AWS_INFERENCE_PROFILE_ID")
 AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
+AWS_SESSION_TOKEN = os.getenv("AWS_SESSION_TOKEN")
+AWS_SECURITY_TOKEN = os.getenv("AWS_SECURITY_TOKEN")
 AWS_REGION = os.getenv("AWS_REGION")
 MODEL_TEMPERATURE = os.getenv("MODEL_TEMPERATURE")
 
@@ -24,9 +27,12 @@ tools = [tavily_tool]
 # Inicializando o Bedrock
 llm = ChatBedrock(
     model_id=AWS_MODEL,
+    inference_profile_id=AWS_INFERENCE_PROFILE_ID,
     region_name=AWS_REGION,
     aws_access_key_id=AWS_ACCESS_KEY_ID,
-    aws_secret_access_key=AWS_SECRET_ACCESS_KEY
+    aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+    aws_session_token=AWS_SESSION_TOKEN,
+    aws_security_token=AWS_SECURITY_TOKEN
 )
 
 # System Prompt
@@ -67,7 +73,7 @@ if __name__ == "__main__":
     print("Digite 'sair' para encerrar.")
 
     while True:
-        user_input = input("\nSua pergunta(informe a cidade e a data): ")
+        user_input = input("\nSua pergunta(Se possível, informe a cidade e a data): ")
         if user_input.lower() == 'sair':
             break
 
